@@ -90,29 +90,13 @@ function addArticle(post) {
   
 
 
-  downloadComments(userId).then(
-    (comments) => {
-
-      for (let i = 0; i < comments.length; i++) {
-        var aside = document.createElement("aside");
-        aside.innerHTML = comments[i].body.replace(/[\n\r]/g, '<br>');
-        section.appendChild(aside);
-
-        var user = document.createElement("p");
-        var small = document.createElement("small");
-        small.innerHTML = comments[i].name;
-        user.appendChild(small);
-
-        aside.appendChild(user);
-      }
-    }
-  );
+  // downloadComments(userId)
 
   
 
 } 
 
-const posts = await downloadPosts(3);
+const posts = await downloadPosts(5);
 console.log(posts);
 
 // const button = document.querySelector("article");
@@ -121,16 +105,31 @@ for (let i = 0; i < posts.length; i++) {
   addArticle(posts[i]);
 }
 
-
 const details = document.getElementsByTagName("details");
 for (const detail of details) {
   detail.addEventListener("toggle", async (event) => {
+    alert(1);
     if (detail.open) {
       const asides = detail.getElementsByTagName("aside");
       const commentsWereDownloaded = asides.length > 0;
       if (!commentsWereDownloaded) {
         const articleId = getArticleId(detail);
-        const comments = await downloadComments(articleId);
+        const comments = await downloadComments(articleId).then(
+          (comments) => {
+      
+            for (let i = 0; i < comments.length; i++) {
+              var aside = document.createElement("aside");
+              aside.innerHTML = comments[i].body.replace(/[\n\r]/g, '<br>');
+              detail.getElementsByTagName("section")[0].appendChild(aside);
+              var user = document.createElement("p");
+              var small = document.createElement("small");
+              small.innerHTML = comments[i].name;
+              user.appendChild(small);
+              
+              aside.appendChild(user);
+            }
+          }
+        );
         console.log(comments);
       }
     }
