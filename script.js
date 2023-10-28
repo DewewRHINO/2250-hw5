@@ -108,7 +108,7 @@ for (let i = 0; i < posts.length; i++) {
 const details = document.getElementsByTagName("details");
 for (const detail of details) {
   detail.addEventListener("toggle", async (event) => {
-    alert(1);
+
     if (detail.open) {
       const asides = detail.getElementsByTagName("aside");
       const commentsWereDownloaded = asides.length > 0;
